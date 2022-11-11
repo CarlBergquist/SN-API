@@ -4,6 +4,7 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
+      .select("-__v")
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
@@ -23,12 +24,14 @@ module.exports = {
   // Delete a user by _id
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.userId })
-    .then(() => res.json({ message: 'User deleted!' }))
+      .then(() => res.json({ message: 'User deleted!' }))
   },
   // Create
   createUser(req, res) {
     User.create(req.body)
-      .then((user) => res.json(user))
+      .then((user) => {
+        res.json(user)
+      })
       .catch((err) => res.status(500).json(err));
   },
   // Update a user
